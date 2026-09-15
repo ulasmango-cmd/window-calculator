@@ -4,9 +4,16 @@
 
 ## Live Demo
 
-Deployment is being re-provisioned. The verified production URL will be published here once the backend service and managed database are restored.
+**https://wincalc-api-tx2h.onrender.com**
 
-> The previous deployment pointed at a source repository on a retired GitHub account, and its managed database has since been removed. The application source is intact and builds cleanly; the production stack is being rebuilt. See [Project Status](#project-status).
+The application is login-gated. A read/write demonstration account is provided:
+
+| | |
+|---|---|
+| Username | `demo` |
+| Password | `WinCalc-Demo-2026!` |
+
+> This is a shared demonstration account on a seeded dataset — not production data. The service runs on a free tier and sleeps after a period of inactivity, so the first request may take up to a minute to wake.
 
 ## Overview
 
@@ -87,7 +94,7 @@ For a fuller breakdown, see [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 ## Screenshots
 
-Screenshots are captured against a running instance and will be added alongside the restored live demo. The application is a login-gated business tool, so preview imagery is produced from a seeded demonstration dataset rather than production data.
+Screenshots are pending capture from the live instance. The application is a login-gated business tool, so preview imagery is produced from the seeded demonstration dataset rather than production data. In the meantime, the live demo above can be opened directly with the demonstration account.
 
 ## Technical Highlights
 
@@ -100,29 +107,33 @@ Screenshots are captured against a running instance and will be added alongside 
 
 ## Deployment
 
-The production topology is a split deployment:
+The current production topology is a single service: the Express application serves the built client and the API from one origin, backed by managed PostgreSQL.
 
 | Layer | Host | Responsibility |
 |-------|------|----------------|
-| Frontend | Vercel | Static SPA build, edge caching, API reverse-proxy |
-| API | Render | Express application, authentication, pricing, document generation |
+| Application | Render | Express API, authentication, pricing, document generation, SPA delivery |
 | Database | Managed PostgreSQL | Catalog, customers, calculations, quotations |
 
-The frontend is deployed as a static build and proxies `/api/*` to the API service, which keeps the browser on a single origin and avoids cross-origin configuration in the client. The API also has the capability to serve the built SPA directly, which allows the whole application to run as a single service when a simplified topology is preferable.
+Serving both tiers from one origin removes an entire class of cross-origin and cookie-scope problems, and keeps the deployment cheap to operate. The application also supports a split topology — a static client on an edge network proxying `/api/*` to the API service — which is the preferred arrangement when the client should be served from a CDN.
 
 Configuration is environment-driven. Database credentials, JWT signing secrets, and service URLs are supplied as environment variables at deploy time and are never committed to source control.
 
 ## Project Status
 
-**Active development — production stack being rebuilt.**
+**Live.** The application is deployed and serving. Verified end to end:
 
-The application source is complete and builds cleanly. The previously configured production deployment is not currently serving, for reasons outside the application code:
+- API health check returns `{"status":"ok","database":"postgresql"}`
+- Database schema applied and catalog seeded (22 tables; 41 window types, 9 glass types, 13 colours)
+- Authentication working — the demonstration account signs in successfully
+- Single-page application served and client-side routing resolving
 
-- The API service was connected to a source repository on a GitHub account that is no longer accessible
-- The managed PostgreSQL instance backing production has been removed
-- The frontend project remains on a Vercel team that the current account cannot administer
+The production stack runs as a single service: the Express application serves both the API and the built client, backed by managed PostgreSQL.
 
-Repairing this requires re-pointing the API service at the current source repository, provisioning a replacement managed database, and reconnecting the frontend project. Screenshots and the verified live demo link will be published here once the stack is serving again.
+Known operational constraints of the current deployment:
+
+- The service runs on a free tier and idles when unused; the first request after a period of inactivity is slow
+- The managed database is a free-tier instance with a limited lifetime and will need migrating to a permanent plan
+- Screenshots are pending capture from the live instance
 
 ## Ownership
 
