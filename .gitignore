@@ -1,0 +1,14 @@
+# Local artefacts
+.DS_Store
+Thumbs.db
+*.log
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Environment — never commit real configuration
+.env
+.env.*
+*.local
