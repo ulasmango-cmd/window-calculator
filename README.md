@@ -13,6 +13,8 @@ The application is login-gated. A read/write demonstration account is provided:
 | Username | `demo` |
 | Password | `WinCalc-Demo-2026!` |
 
+The public pages also offer a one-click **View live demo** button that signs in with this account and drops you straight into the application — no registration required. The demo user is an administrator, so the configurator, quotations, bill of materials, catalog, and the administrative modules are all explorable.
+
 > This is a shared demonstration account on a seeded dataset — not production data. The service runs on a free tier and sleeps after a period of inactivity, so the first request may take up to a minute to wake.
 
 ## Overview
