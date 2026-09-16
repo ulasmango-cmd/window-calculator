@@ -37,6 +37,7 @@ The interface follows the **Windows 11 Fluent** design language — Segoe UI typ
 - **Role-based access** — separate Administrator and Employee surfaces
 - **Multi-language** — Albanian, English, and Romanian, with the interface built for additional locales
 - **Backup and restore** — administrative backup tooling for the catalog and business data
+- **Public site** — subscription plans, signup enquiry, and contact pages for prospective customers, separate from the authenticated application
 
 ## Technology
 
@@ -126,6 +127,9 @@ Configuration is environment-driven. Database credentials, JWT signing secrets, 
 - Database schema applied and catalog seeded (22 tables; 41 window types, 9 glass types, 13 colours)
 - Authentication working — the demonstration account signs in successfully
 - Single-page application served and client-side routing resolving
+- Pricing engine returning a full itemized breakdown (subtotal, margin, VAT, total) for a configured unit
+- Calculations persisting and appearing on the administrative dashboard
+- All 20 API modules responding correctly with live catalog data
 
 The production stack runs as a single service: the Express application serves both the API and the built client, backed by managed PostgreSQL.
 
